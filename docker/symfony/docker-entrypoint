@@ -1,0 +1,40 @@
+#!/bin/bash
+set -xe
+
+root_dir="/srv"
+symfony_dir="$root_dir/symfony"
+bundle_dir="$root_dir"
+
+if ! [ -d "$symfony_dir" ]; then
+    symfony new --quiet $symfony_dir
+
+    cd $symfony_dir
+
+    # install composer dependence
+    # alcaeus/mongo-php-adapter has to be install before doctrine/mongodb-odm
+    sed -i "/\"scripts\"\:\ {$/a \ \ \ \ \ \ \ \ \"update-dir-owner-to-www-data\":\ \"chown -R www-data:www-data var\/\"," composer.json
+
+    sed -i "s/\@symfony\-scripts\"$/\0,\n\ \ \ \ \ \ \ \ \ \ \ \ \"@update-dir-owner-to-www-data\"/g" composer.json
+
+    # # GITHUB_ACCESS_TOKEN is use for accessing private github repo with composer
+    # composer config github-oauth.github.com $GITHUB_ACCESS_TOKEN
+    # composer config <repositories.Repository> git <git@github.com:Organization/Repository.git>
+    # composer require --dev vendor/package
+
+    # # mongo dependence
+    # composer require alcaeus/mongo-php-adapter
+    # composer require doctrine/mongodb-odm doctrine/mongodb-odm-bundle
+
+    #TODO composer dependence
+    # composer require --dev doctrine/doctrine-fixtures-bundle
+
+    cd ..
+fi
+
+if ! [ -d "$bundle_dir/$VENDOR_NAME" ]; then
+    $symfony_dir/bin/console generate:bundle --namespace=$VENDOR_NAME/$BUNDLE_NAME --format=$BUNDLE_FORMAT --dir=$bundle_dir --shared --no-interaction
+
+    ln -s $bundle_dir/$VENDOR_NAME $symfony_dir/src/
+fi
+
+exec "$@"

@@ -1,0 +1,58 @@
+# Court Of Owls - Development
+
+This repository is try to help developing Symfony's bundle easier with use of docker. Follow all the Pre-Usage steps prior to first docker build process.
+
+This repository consist of
+- docker/ - individual container configs and/or Dockerfile
+- symfony/ - [hidden directory] core symfony app. Initialize on first docker run.
+- your custom vendor package
+
+Following these setup before running docker
+
+1. Docker Environment Variables
+2. Docker Compose
+3. Composer Dependence
+
+## Pre-Usage
+
+### Docker Environment Variables
+Create `.env` file before docker first run. Fill in the require fields.
+```
+cp .env.dist .env
+```
+
+### Docker Compose
+Uncomment mysql or/and mongo blocks as bundle required.
+
+### Dockerfile [php-fpm|symfony]
+Uncomment mysql or/and mongo block in `docker/php-fpm/Dockerfile` and `docker/php-fpm/Dockerfile` as bundle required.
+
+### Composer Dependence
+Add composer dependence onto `docker/symfony/docker-entrypoint`.
+
+ps: `GITHUB_ACCESS_TOKEN` is required in `.env` when using private composer package from github.
+
+### Mongo Setup (Require when use mongodb)
+Follow Symfony's [document](http://symfony.com/doc/current/bundles/DoctrineMongoDBBundle/index.html#installation) to config MongoDBBundle
+
+## Usage
+
+Build containers
+```
+docker-composer build
+```
+
+Run all container
+```
+docker-composer up
+```
+
+Run inside symfony container. Use symfony console or composer command
+```
+docker-composer run symfony bash
+```
+
+Close all container
+```
+docker-composer down
+```

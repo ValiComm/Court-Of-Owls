@@ -1,0 +1,9 @@
+compsoer.lock
+docker/mongo/*
+!docker/mongo/.gitkeep
+docker/mysql/*
+!docker/mysql/.gitkeep
+!/.env.dist
+!/.env
+/vendor
+/symfony

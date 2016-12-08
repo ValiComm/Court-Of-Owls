@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SUBJ_C=${OPENSSL_SUBJ_C:-}
+SUBJ_ST=${OPENSSL_SUBJ_ST:-}
+SUBJ_L=${OPENSSL_SUBJ_L:-}
+SUBJ_O=${OPENSSL_SUBJ_O:-}
+SUBJ_OU=${OPENSSL_SUBJ_OU:-}
+SUBJ_CN=${OPENSSL_SUBJ_CN:-localhost}
+
+mkdir /etc/nginx/ssl \
+    && openssl req \
+    -x509 \
+    -nodes \
+    -days ${OPENSSL_DAYS:-365} \
+    -newkey ${OPENSSL_NEWKEY:-rsa:2048} \
+    -keyout /etc/nginx/ssl/nginx.key \
+    -out /etc/nginx/ssl/nginx.crt \
+    -subj "/C=$SUBJ_C/ST=$SUBJ_ST/L=$SUBJ_L/O=$SUBJ_O/OU=$SUBJ_OU/CN=$SUBJ_CN"
+
+# exec docker command
+exec "$@"
