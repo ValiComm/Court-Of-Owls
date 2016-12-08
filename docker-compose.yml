@@ -23,8 +23,6 @@ services:
     #     image: phpmyadmin/phpmyadmin:latest
     #     depends_on:
     #         - mysql
-    #     links:
-    #         - mysql
     #     environment:
     #         PMA_HOST: mysql
     #         PMA_VERBOSE: database
@@ -47,8 +45,6 @@ services:
     #     image: mongo-express
     #     depends_on:
     #         - mongo
-    #     links:
-    #         - mongo
     #     ports:
     #         - "8081:8081"
 
@@ -67,8 +63,6 @@ services:
             - ./docker/symfony/php.ini:/usr/local/etc/php/php.ini
         volumes_from:
             - src
-        links:
-            - mongo
 
     php-fpm:
         build: docker/php-fpm/
@@ -79,8 +73,6 @@ services:
         volumes_from:
             - src
             - symfony
-        links:
-            - mongo
 
     nginx:
         image: nginx
