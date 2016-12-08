@@ -57,7 +57,8 @@ services:
                 BUNDLE_FORMAT:
         depends_on:
             - src
-            - mongo
+            # - mongo
+            # - mysql
         env_file: .env
         volumes:
             - ./docker/symfony/php.ini:/usr/local/etc/php/php.ini
