@@ -4,6 +4,6 @@ docker/mongo/*
 docker/mysql/*
 !docker/mysql/.gitkeep
 !/.env.dist
-!/.env
+/.env
 /vendor
 /symfony
