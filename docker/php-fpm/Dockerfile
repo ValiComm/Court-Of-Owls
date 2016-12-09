@@ -1,24 +1,9 @@
-FROM php:7.0-fpm
-
-ENV SYS_DEPS \
-        libicu-dev
-
-ENV BUILD_DEPS \
-        libssl-dev
-
-ENV PHP_DEPS \
-        intl \
-        opcache
+FROM billiam13s/symfony-requirements:7.0-fpm
 
 ENV PECL_DEPS \
         xdebug
 
 RUN set -xe \
-        && apt-get update \
-        && apt-get install -y --no-install-recommends \
-            $SYS_DEPS \
-            $BUILD_DEPS \
-        && docker-php-ext-install -j$(nproc) $PHP_DEPS \
         && pecl install $PECL_DEPS \
         && docker-php-ext-enable $PECL_DEPS
 

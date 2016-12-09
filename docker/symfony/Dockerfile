@@ -1,27 +1,17 @@
-FROM php:7.0
+FROM billiam13s/symfony-requirements:7.0
 
 ARG GITHUB_ACCESS_TOKEN
 ARG BUNDLE_NAME
 ARG BUNDLE_FORMAT
 
 ENV SYS_DEPS \
-        libicu-dev \
         git \
         unzip
-
-ENV BUILD_DEPS \
-        libssl-dev
-
-ENV PHP_DEPS \
-        intl \
-        opcache
 
 RUN set -xe \
         && apt-get update \
         && apt-get install -y --no-install-recommends \
             $SYS_DEPS \
-            $BUILD_DEPS \
-        && docker-php-ext-install -j$(nproc) $PHP_DEPS \
         && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
         && chmod a+x /usr/local/bin/symfony \
         && curl -sS https://getcomposer.org/installer | php \
