@@ -1,0 +1,21 @@
+version: '2'
+services:
+    php-fpm:
+        extends:
+            file: common-services.yml
+            service: php-fpm
+        depends_on:
+            - symfony
+        volumes_from:
+            - src
+            - symfony
+
+    nginx:
+        extends:
+            file: common-services.yml
+            service: nginx
+        depends_on:
+            - php-fpm
+        volumes_from:
+            - src
+            - symfony

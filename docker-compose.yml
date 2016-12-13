@@ -1,103 +1,49 @@
 version: '2'
 services:
     src:
-        image: busybox
-        volumes:
-            - ./:/srv:rw
+        extends:
+            file: common-services.yml
+            service: src
 
     # mysql:
-    #     image: mysql:5 #mysql:latest
-    #     volumes:
-    #         - ./docker/mysql:/var/lib/mysql
-    #     environment:
-    #         MYSQL_ROOT_PASSWORD: password
-    #         MYSQL_DATABASE: database
-    #         MYSQL_USER: user
-    #         MYSQL_PASSWORD: password
+    #     extends:
+    #         file: common-services.yml
+    #         service: mysql
     #     # uncomment to access from outside of the container
     #     # ports:
     #     #     - "3306:3306"
 
     # # uncommnet for phpmyadmin client
     # phpmyadmin:
-    #     image: phpmyadmin/phpmyadmin:latest
+    #     extends:
+    #         file: common-services.yml
+    #         service: phpmyadmin
     #     depends_on:
     #         - mysql
-    #     environment:
-    #         PMA_HOST: mysql
-    #         PMA_VERBOSE: database
-    #         PMA_PORT: 3306
-    #         PMA_USER: user
-    #         PMA_PASSWORD: password
-    #     ports:
-    #         - "8080:80"
 
     # mongo:
-    #     image: mongo:3.0 #mongo:latest
-    #     volumes:
-    #         - ./docker/mongo:/data/db
+    #     extends:
+    #         file: common-services.yml
+    #         service: mongo
     #     #uncomment to access from outside of the container
     #     # ports:
     #     #     - "27017:27017"
 
     # # uncommnet for web mongo client
     # mongo-express:
-    #     image: mongo-express
+    #     extends:
+    #         file: common-services.yml
+    #         service: mongo-express
     #     depends_on:
     #         - mongo
-    #     ports:
-    #         - "8081:8081"
 
     symfony:
-        build:
-            context: docker/symfony/
-            args:
-                GITHUB_ACCESS_TOKEN:
-                BUNDLE_NAME:
-                BUNDLE_FORMAT:
+        extends:
+            file: common-services.yml
+            service: symfony
         depends_on:
             - src
             # - mongo
             # - mysql
-        env_file: .env
-        volumes:
-            - ./docker/symfony/php.ini:/usr/local/etc/php/php.ini
         volumes_from:
             - src
-
-    php-fpm:
-        build: docker/php-fpm/
-        depends_on:
-            - symfony
-        volumes:
-            - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
-        volumes_from:
-            - src
-            - symfony
-
-    nginx:
-        image: nginx
-        command: ["nginx", "-g", "daemon off;"]
-        depends_on:
-            - php-fpm
-        entrypoint: docker-entrypoint
-        environment:
-            OPENSSL_DAYS:
-            OPENSSL_NEWKEY:
-            OPENSSL_SUBJ_C:
-            OPENSSL_SUBJ_ST:
-            OPENSSL_SUBJ_L:
-            OPENSSL_SUBJ_O:
-            OPENSSL_SUBJ_OU:
-            OPENSSL_SUBJ_CN:
-        volumes:
-            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - ./docker/nginx/docker-entrypoint:/usr/local/bin/docker-entrypoint
-        volumes_from:
-            - src
-            - symfony
-        links:
-            - php-fpm
-        ports:
-            - "80:80"
-            - "443:443"
