@@ -58,3 +58,9 @@ Close all container
 ```
 docker-composer down
 ```
+
+## Testing
+
+```
+docker-compose -f docker-compose.yml -f docker-compose.test.yml run phpunit
+```

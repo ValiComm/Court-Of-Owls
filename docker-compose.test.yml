@@ -1,0 +1,10 @@
+version: '2'
+services:
+    phpunit:
+        image: phpunit/phpunit
+        env_file: .env
+        working_dir: /srv/symfony
+        volumes_from:
+            - src
+            - symfony
+        command: ["src/$VENDOR_NAME/$BUNDLE_NAME/Tests"]
