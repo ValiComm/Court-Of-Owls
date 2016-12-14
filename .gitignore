@@ -7,3 +7,4 @@ docker/mysql/*
 /.env
 /vendor
 /symfony
+coverage

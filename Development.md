@@ -64,3 +64,8 @@ docker-composer down
 ```
 docker-compose -f docker-compose.yml -f docker-compose.test.yml run phpunit
 ```
+
+Code Coverage
+```
+docker-compose -f docker-compose.yml -f docker-compose.test.yml run phpunit phpunit --coverage-html /srv/coverage src/<VENDOR_NAME>/<BUNDLE_NAME>/Tests
+```
