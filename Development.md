@@ -62,10 +62,18 @@ docker-composer down
 ## Testing
 
 ```
-docker-compose -f docker-compose.yml -f docker-compose.test.yml run phpunit
+docker-compose run symfony bash
+
+cd /srv/symfony
+phpunit
 ```
 
 Code Coverage
 ```
-docker-compose -f docker-compose.yml -f docker-compose.test.yml run phpunit phpunit --coverage-html /srv/coverage src/<VENDOR_NAME>/<BUNDLE_NAME>/Tests
+docker-compose run symfony bash
+
+cd /srv/symfony
+phpunit
+docker-php-ext-enable xdebug
+phpunit --coverage-html coverage
 ```

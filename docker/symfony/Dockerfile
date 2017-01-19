@@ -33,6 +33,17 @@ RUN set -xe \
 #        && pecl install $MONGO_DEPS \
 #        && docker-php-ext-enable $MONGO_DEPS
 
+# Code Coverage, disable xdebug by default
+ENV PHP_CODE_COVERAGE_DEPS \
+        xdebug
+
+RUN set -xe \
+        && pecl install $PHP_CODE_COVERAGE_DEPS
+
+# install phpunit
+RUN set -xe \
+        && composer global require phpunit/phpunit
+
 # clean up unneeded libs
 RUN set -xe \
         && rm -rf /var/lib/apt/lists/* \
@@ -43,3 +54,5 @@ COPY docker-entrypoint /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["bash"]
+
+ENV PATH "/root/.composer/vendor/bin:$PATH"

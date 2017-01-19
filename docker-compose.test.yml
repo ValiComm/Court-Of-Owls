@@ -1,9 +1,0 @@
-version: '2'
-services:
-    phpunit:
-        extends:
-            file: common-services.yml
-            service: phpunit
-        volumes_from:
-            - src
-            - symfony

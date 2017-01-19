@@ -76,9 +76,3 @@ services:
         ports:
             - "80:80"
             - "443:443"
-
-    phpunit:
-        build: docker/phpunit/
-        env_file: .env
-        working_dir: /srv/symfony
-        command: ["phpunit", "src/$VENDOR_NAME/$BUNDLE_NAME/Tests"]
